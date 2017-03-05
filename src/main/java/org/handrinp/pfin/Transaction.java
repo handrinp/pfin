@@ -22,5 +22,18 @@ public class Transaction {
     public String getTime() {
         return time;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Transaction) {
+            Transaction t = (Transaction) o;
+
+            return Math.abs(amount - t.getAmount()) < Constants.DELTA &&
+                    message.equals(t.getMessage()) &&
+                    time.equals(t.getTime());
+        }
+
+        return false;
+    }
 }
 
