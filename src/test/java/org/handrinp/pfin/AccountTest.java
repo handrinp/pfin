@@ -3,6 +3,8 @@ package org.handrinp.pfin;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
+import java.io.File;
+
 public class AccountTest {
     @Test
     public void testBoilerplate() {
@@ -52,6 +54,18 @@ public class AccountTest {
 
         Account b = Account.fromJson(json);
         assertEquals(b, a);
+    }
+
+    @Test
+    public void testFileUtilities() {
+        Account a = new Account("Test account");
+        a.addTransaction(100.00, "test transaction 1", "2017-03-05 12:00:00.000");
+        a.addTransaction(-50.00, "test transaction 2", "2017-03-05 12:10:00.000");
+
+        assertEquals("test-account.json", a.getFileName());
+        assertEquals(true, a.save());
+        assertEquals(a, Account.load("Test account"));
+        assertEquals(true, new File(a.getFileName()).delete());
     }
 }
 
