@@ -15,6 +15,6 @@ How to use PFin
 - After you build the project (see above), you can run it with
 
 ```
-java -jar target/PFin.jar
+java -jar target/pfin.jar
 ```
 
