@@ -20,7 +20,7 @@
   <build>
     <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
     <outputDirectory>${project.basedir}/target/classes</outputDirectory>
-    <defaultGoal>install</defaultGoal>
+    <defaultGoal>clean install</defaultGoal>
     <resources>
       <resource>
         <directory>${project.basedir}/src/main/java</directory>
