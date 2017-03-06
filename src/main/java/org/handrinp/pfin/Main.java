@@ -1,20 +1,36 @@
 package org.handrinp.pfin;
 
+import java.io.Console;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         // load in account info
+        Console console = System.console();
+
+        if (console == null) {
+            System.out.println("Couldn't get the console instance.");
+            System.exit(0);
+        }
+
         Scanner kb = new Scanner(System.in);
         System.out.print("Enter the account name: ");
         String name = kb.nextLine();
-        Account account = Account.load(name);
+        String password = new String(console.readPassword("Enter your password: "));
+        Account account;
 
-        if (account == null) {
-            account = new Account(name);
-            System.out.println("New account created successfully.");
+        if (Account.exists(name)) {
+            account = Account.load(name, password);
+
+            if (account == null) {
+                System.out.println("Incorrect password.");
+                System.exit(0);
+            } else {
+                System.out.println("Loaded account successfully.");
+            }
         } else {
-            System.out.println("Loaded account successfully.");
+            account = new Account(name, password);
+            System.out.println("New account created successfully.");
         }
 
         boolean cont = true;

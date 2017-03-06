@@ -12,17 +12,23 @@ import java.util.Scanner;
 
 public class Account {
     private String name;
+    private String saltedHash;
     private double balance;
     private List<Transaction> transactions;
 
-    public Account(String name) {
+    public Account(String name, String password) {
         this.name = name;
+        this.saltedHash = Crypto.getSaltedHash(password);
         this.balance = 0.0;
         this.transactions = new ArrayList<Transaction>();
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getSaltedHash() {
+        return saltedHash;
     }
 
     public double getBalance() {
@@ -52,7 +58,8 @@ public class Account {
         if (o instanceof Account) {
             Account that = (Account) o;
 
-            if (name.equals(that.getName()) && Math.abs(balance - that.getBalance()) < Constants.DELTA) {
+            if (name.equals(that.getName())
+                        && Math.abs(balance - that.getBalance()) < Constants.DELTA) {
                 if (getTransactionCount() == that.getTransactionCount()) {
                     return transactions.containsAll(that.getTransactions());
                 }
@@ -82,6 +89,11 @@ public class Account {
         return getFileName(name);
     }
 
+    public static boolean exists(String name) {
+        File f = new File(getFileName(name));
+        return f.isFile();
+    }
+
     public static String getFileName(String name) {
         String fixedName = name.trim().toLowerCase().replaceAll("\\s+", "-");
         return fixedName + ".json";
@@ -101,13 +113,14 @@ public class Account {
         return success;
     }
 
-    public static Account load(String name) {
+    public static Account load(String name, String password) {
         Account account;
 
         try (Scanner in = new Scanner(new File(getFileName(name)))) {
             String json = in.nextLine();
             account = fromJson(json);
-        } catch (FileNotFoundException e) {
+            if (!Crypto.check(password, account.getSaltedHash())) throw new Exception();
+        } catch (Exception e) {
             account = null;
         }
 
