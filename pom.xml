@@ -5,7 +5,7 @@
     <!-- Basics -->
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.handrinp.pfin</groupId>
-    <artifactId>PFin</artifactId>
+    <artifactId>pfin</artifactId>
     <version>1.0</version>
 
     <!-- Build settings -->
@@ -78,6 +78,11 @@
             <version>1.10</version>
         </dependency>
     </dependencies>
+
+    <!-- Properties -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <!-- Project info -->
     <name>PFin</name>
