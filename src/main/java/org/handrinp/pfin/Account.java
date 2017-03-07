@@ -128,7 +128,7 @@ public class Account {
         try (Scanner in = new Scanner(new File(getFileName(name)), "UTF-8")) {
             String json = in.nextLine();
             account = fromJson(json);
-            if (!Crypto.check(password, account.getSaltedHash())) throw new IllegalArgumentException();
+            if (!Crypto.check(password, account.getSaltedHash())) account = null;
         } catch (FileNotFoundException|IllegalArgumentException e) {
             account = null;
         }
