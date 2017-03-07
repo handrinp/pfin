@@ -63,19 +63,19 @@ public class Main {
 
     public static void printTransactions(Account account) {
         System.out.println();
-        System.out.println("============================================================");
+        System.out.println("================================================================");
 
         for (Transaction t : account.getTransactions()) {
-            String trunc = t.getMessage();
+            String fixedMessage = t.getMessage();
 
-            if (trunc.length() > 20) {
-                trunc = trunc.substring(0, 17) + "...";
+            if (fixedMessage.length() > 20) {
+                fixedMessage = fixedMessage.substring(0, 17) + "...";
             }
 
-            System.out.printf("%20s    %23s    %+9.2f%n", trunc, t.getTime(), t.getAmount());
+            System.out.printf("%20s    %23s    %+9.2f ===%n", fixedMessage, t.getTime(), t.getAmount());
         }
 
-        System.out.printf("======================================== Total: %8.2f ===%n", account.getBalance());
+        System.out.printf("============================================ Total: %8.2f ===%n", account.getBalance());
         System.out.println();
     }
 }
