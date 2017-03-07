@@ -4,7 +4,9 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -19,7 +21,7 @@ public class Crypto {
         try {
             byte[] salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
             saltedHash = Base64.encodeBase64String(salt) + "$" + hash(password, salt);
-        } catch (Exception e) {
+        } catch (NoSuchAlgorithmException e) {
             saltedHash = null;
         }
 
@@ -50,7 +52,7 @@ public class Crypto {
                 SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
                 SecretKey key = f.generateSecret(new PBEKeySpec(password.toCharArray(), salt, iterations, desiredKeyLen));
                 hash = Base64.encodeBase64String(key.getEncoded());
-            } catch (Exception e) {
+            } catch (InvalidKeySpecException|NoSuchAlgorithmException e) {
                 hash = null;
             }
         }

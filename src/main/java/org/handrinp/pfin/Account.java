@@ -1,13 +1,13 @@
 package org.handrinp.pfin;
 
 import com.google.gson.Gson;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Account {
@@ -69,6 +69,15 @@ public class Account {
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + Double.valueOf(balance).hashCode();
+        result = 31 * result + transactions.hashCode();
+        return result;
+    }
+
     // JSON utilities
 
     public String toJson() {
@@ -95,17 +104,17 @@ public class Account {
     }
 
     public static String getFileName(String name) {
-        String fixedName = name.trim().toLowerCase().replaceAll("\\s+", "-");
+        String fixedName = name.trim().toLowerCase(Locale.ENGLISH).replaceAll("\\s+", "-");
         return fixedName + ".json";
     }
 
     public boolean save() {
         boolean success = true;
 
-        try (PrintWriter pw = new PrintWriter(getFileName())) {
+        try (PrintWriter pw = new PrintWriter(getFileName(), "UTF-8")) {
             String json = toJson();
             pw.println(json);
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException|UnsupportedEncodingException e) {
             // fail silently
             success = false;
         }
@@ -116,11 +125,11 @@ public class Account {
     public static Account load(String name, String password) {
         Account account;
 
-        try (Scanner in = new Scanner(new File(getFileName(name)))) {
+        try (Scanner in = new Scanner(new File(getFileName(name)), "UTF-8")) {
             String json = in.nextLine();
             account = fromJson(json);
-            if (!Crypto.check(password, account.getSaltedHash())) throw new Exception();
-        } catch (Exception e) {
+            if (!Crypto.check(password, account.getSaltedHash())) throw new IllegalArgumentException();
+        } catch (FileNotFoundException|IllegalArgumentException e) {
             account = null;
         }
 

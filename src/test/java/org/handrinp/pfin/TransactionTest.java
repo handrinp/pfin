@@ -13,6 +13,7 @@ public class TransactionTest {
 
         Transaction t2 = new Transaction(100.00, "Test transaction 1", "2017-03-05 12:30:00.000");
         assertEquals(t2, t);
+        assertEquals(t2.hashCode(), t.hashCode());
     }
 }
 

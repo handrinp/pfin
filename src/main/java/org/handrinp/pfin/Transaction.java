@@ -35,5 +35,14 @@ public class Transaction {
 
         return false;
     }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = 31 * result + Double.valueOf(amount).hashCode();
+        result = 31 * result + message.hashCode();
+        result = 31 * result + time.hashCode();
+        return result;
+    }
 }
 

@@ -37,6 +37,7 @@ public class AccountTest {
         b.addTransaction(-50.00, "test transaction 2", "2017-03-05 12:10:00.000");
 
         assertEquals(a, b);
+        assertEquals(a.hashCode(), b.hashCode());
     }
 
     @Test
