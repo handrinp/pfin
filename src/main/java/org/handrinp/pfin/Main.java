@@ -58,9 +58,7 @@ public class Main {
             // close app
             boolean success = account.save();
             System.out.println(success ? "Account saved successfully." : "Account save failed!");
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
+        } catch (IllegalArgumentException e) {} // this will never happen, since UTF-8 encoding exists
     }
 
     public static void printTransactions(Account account) {
